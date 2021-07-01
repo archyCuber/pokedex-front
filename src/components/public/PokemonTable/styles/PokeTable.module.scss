@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  align-items: center;
+  //flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+.list {
+  display: inline-block;
+  max-height: 500px;
+  overflow-y: scroll;
+  scrollbar-color: #d4aa70 #e4e4e4;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}

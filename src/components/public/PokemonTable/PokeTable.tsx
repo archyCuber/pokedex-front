@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import InfoOfPokemonsHelper from "../../helpers/InfoOfPokemonsHelper";
-import { IPokemonForm } from "../../models/PokemonForm";
-import { LisOfPokemons } from "./PokemonTable/LisOfPokemons";
-import { NavigationPanel } from "./PokemonTable/NavigationPanel";
-import styles from "./PokemonTable/styles/TestSelect.module.scss";
+import InfoOfPokemonsHelper from "../../../helpers/InfoOfPokemonsHelper";
+import { IPokemonForm } from "../../../models/PokemonForm";
+import { LisOfPokemons } from "./LisOfPokemons";
+import { NavigationPanel } from "./NavigationPanel";
+import styles from "./styles/PokeTable.module.scss";
 
 export const PokeTable = () => {
   const [paging, setPaging] = useState(10);
