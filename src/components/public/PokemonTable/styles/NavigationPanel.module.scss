@@ -1,0 +1,92 @@
+.root {
+  display: flex;
+  margin-top: 50px;
+}
+
+.pagesList {
+  display: flex;
+
+  &__item {
+    cursor: pointer;
+    padding-right: 5px;
+
+    &__current {
+      background-color: wheat;
+    }
+  }
+}
+li {
+  list-style-type: none; /* Убираем маркеры */
+}
+ul {
+  margin-left: 0; /* Отступ слева в браузере IE и Opera */
+  padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+.pagination {
+  background-color: #555;
+  font-family: "Work Sans", sans-serif;
+  display: inline-flex;
+  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.pagination li div.page-link {
+  color: #fff;
+  background: #555;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 27px;
+  height: 27px;
+  width: 35px;
+  padding: 0;
+  margin: 0 3px;
+  border-radius: 0;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  border: none;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease 0s;
+}
+.pagination li div.page-link:hover,
+.pagination li div.page-link:focus,
+.pagination li.active div.page-link:hover,
+.pagination li.active div.page-link {
+  color: #fff;
+  background: #555;
+}
+.pagination li:first-child div.page-link:hover,
+.pagination li:last-child div.page-link:hover {
+  background-color: #f55f13;
+}
+.pagination li div.page-link:before {
+  content: "";
+  background-color: #f55f13;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  opacity: 0;
+  transform: scaleY(0);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transition: all 0.3s ease 0s;
+}
+.pagination li div.page-link:hover:before,
+.pagination li.active div.page-link:before {
+  opacity: 1;
+  transform: scaleY(1.5);
+}
+.pagination li:first-child div.page-link:before,
+.pagination li:last-child div.page-link:before {
+  display: none;
+}
+.pagination li:first-child div.page-link {
+  line-height: 24px;
+  margin-left: 0;
+  border-radius: 20px 0 0 20px;
+}
+.pagination li:last-child div.page-link {
+  line-height: 25px;
+  margin-right: 0;
+  border-radius: 0 20px 20px 0;
+}
