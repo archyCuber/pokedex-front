@@ -28,7 +28,7 @@ export const NavigationPanel = (props: IProps) => {
                     props.pageNumber - 1 < 0 ? 0 : props.pageNumber - 1
                   );
                 }}
-              ></div>
+              />
             </li>
             {listOfPage.map((page, index) => {
               return (
@@ -60,7 +60,7 @@ export const NavigationPanel = (props: IProps) => {
                       : props.pageNumber + 1
                   );
                 }}
-              ></div>
+              />
             </li>
           </ul>
         </div>

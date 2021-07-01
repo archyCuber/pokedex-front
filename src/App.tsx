@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { PokeTable } from "./components/public/PokeTable";
+import { PokeTable } from "./components/public/PokemonTable/PokeTable";
 
 function App() {
   return (

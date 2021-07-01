@@ -1,0 +1,176 @@
+.card {
+  //display: flex;
+  --color1: rgb(0, 231, 255);
+  --color2: rgb(255, 0, 231);
+
+  min-width: 160px;
+  height: 200px;
+  //background-image: url(https://images.pokemontcg.io/swsh3/19_hires.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 5% / 3.5%;
+  box-shadow: -13px -13px 13px -15px var(--color1),
+    13px 13px 13px -15px var(--color2), 0 0 4px 2px rgba(255, 255, 255, 0.5),
+    0 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  animation: holoCard 15s ease infinite;
+  transform-origin: center;
+  z-index: 10;
+  transform: translate3d(0, 0, -1px);
+  div:first-child {
+    margin-left: 0;
+  }
+}
+
+.card:before,
+.card:after {
+  content: "";
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-repeat: no-repeat;
+}
+.card:before {
+  background-position: 50% 50%;
+  background-size: 300% 300%;
+  animation: holoGradient 15s ease infinite both;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    var(--color1) 30%,
+    transparent 47.5%,
+    transparent 52.5%,
+    var(--color2) 70%,
+    transparent 100%
+  );
+}
+.card:after {
+  opacity: 1;
+  background-position: center;
+  background-size: 160%;
+  z-index: 2;
+  animation: holoSparkle 15s ease infinite both;
+  filter: brightness(1);
+  transition: filter 0.5s ease;
+}
+
+.card.active {
+  animation: none;
+}
+
+.card.active:before {
+  opacity: 1;
+  animation: none;
+  transition: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 30%,
+    var(--color1) 48%,
+    var(--color2) 53%,
+    transparent 70%
+  );
+  filter: opacity(0.66);
+  mix-blend-mode: screen;
+}
+
+.card.active:before,
+.card.active:after {
+  animation: none;
+}
+.card.active:after {
+  filter: brightness(2.5);
+  mix-blend-mode: screen;
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif");
+}
+
+@keyframes holoCard {
+  0%,
+  100% {
+    transform: rotateZ(0deg) rotateX(0deg) rotateY(0deg);
+  }
+  33% {
+    transform: rotateZ(-10deg) rotateX(20deg) rotateY(-12deg);
+  }
+  66% {
+    transform: rotateZ(10deg) rotateX(-20deg) rotateY(12deg);
+  }
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  perspective: 2000px;
+  position: relative;
+  z-index: 1;
+  transform: translate3d(0.1px, 0.1px, 0.1px);
+}
+
+.cards .card {
+  &:nth-child(2) {
+    &,
+    &:before,
+    &:after {
+      animation-delay: 0.2s;
+    }
+  }
+  &:nth-child(3) {
+    &,
+    &:before,
+    &:after {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes holoSparkle {
+  0%,
+  5%,
+  100% {
+    opacity: 0.2;
+    background-position: 50% 50%;
+  }
+  33% {
+    opacity: 1;
+    background-position: 40% 40%;
+    filter: brightness(2);
+  }
+  45% {
+    opacity: 0.4;
+  }
+  66% {
+    opacity: 1;
+    background-position: 60% 60%;
+    filter: brightness(2);
+  }
+}
+
+@keyframes holoGradient {
+  0%,
+  100% {
+    opacity: 0.05;
+    background-position: 50% 50%;
+  }
+  33% {
+    background-position: 100% 100%;
+    opacity: 0.66;
+  }
+  66% {
+    background-position: 0% 0%;
+    opacity: 0.66;
+  }
+}
+
+.avatar {
+  width: 100%;
+}
