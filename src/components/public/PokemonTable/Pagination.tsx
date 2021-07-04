@@ -3,7 +3,7 @@ import styles from "./styles/Pagination.module.scss";
 
 export const Pagination = (props: {
   paging: number;
-  onChange: (newPage: number) => void;
+  onChange: (newPaging: number) => void;
 }) => {
   return (
     <div>

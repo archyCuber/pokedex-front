@@ -8,7 +8,7 @@ class InfoOfPokemonsHelper {
     }`;
     const result = await axios.get(url);
     const poke = await this.pushPokemons(result.data.results);
-    const maxPage = Math.round(result.data.count / paging);
+    const maxPage = result.data.count;
     return { poke, maxPage };
   };
 
@@ -24,7 +24,7 @@ class InfoOfPokemonsHelper {
   public getById = async (id: number) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const result = await axios.get(url);
-    return result ? result : "error";
+    return result && result.data ? result.data : "error";
   };
 
   public getByName = async (name: string) => {
