@@ -10,7 +10,6 @@ interface IProps {
 export const LisOfPokemons = ({ list }: IProps) => {
   const [active, setActive] = useState<number | null>(null);
   const cards = document.querySelectorAll("#card");
-
   useLayoutEffect(() => {
     if (cards) {
       const fCardRotate = (e: any) => {

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const usePageNumbers = (page: number, maxPage: number) => {
+export const usePageNumbers = (
+  page: number,
+  maxPage: number,
+  paging: number
+) => {
   const [listOfPage, setListOfPage] = useState<number[]>([]);
   useEffect(() => {
     let pagePrev = page;
@@ -8,7 +12,7 @@ export const usePageNumbers = (page: number, maxPage: number) => {
     while (pagePrev > 0 && page - pagePrev < 2) {
       pagePrev--;
     }
-    while (pageNext < maxPage && pageNext - page < 3) {
+    while (pageNext < Math.ceil(maxPage / paging) && pageNext - page < 3) {
       pageNext++;
     }
     const pull = [];
@@ -16,7 +20,7 @@ export const usePageNumbers = (page: number, maxPage: number) => {
       pull.push(i);
     }
     setListOfPage(pull);
-  }, [page, maxPage]);
+  }, [page, maxPage, paging]);
 
   return { listOfPage };
 };

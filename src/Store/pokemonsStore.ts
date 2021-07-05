@@ -4,18 +4,24 @@ import { IPokemonForm } from "../models/PokemonForm";
 import { IFilter } from "../models/IFilter";
 
 interface IStoreItem {
-  [key: string]: IPokemonForm[];
+  [key: string]: { data: IPokemonForm[]; total: number };
 }
 
 class PokemonsStore {
   pokemonsList = {} as IStoreItem;
-  pokemonsListView: IPokemonForm[] = [];
-  loader = false
-  maxPage = 100;
+  pokemonsListView: { data: IPokemonForm[]; total: number } = {
+    data: [],
+    total: 0,
+  };
+  loader = false;
+  names: string[] = [];
+  maxPage = 0;
+  maxPageSearch = 0;
   constructor() {
     makeObservable(this, {
       pokemonsListView: observable,
       maxPage: observable,
+      maxPageSearch: observable,
       listView: computed,
       getPokemonsV2: action,
       getMaxPage: computed,
@@ -35,6 +41,10 @@ class PokemonsStore {
 
   private setMaxPage = (newMaxPage: number) => {
     this.maxPage = newMaxPage;
+  };
+
+  private setMaxPageSearch = (newMaxPageSearch: number) => {
+    this.maxPageSearch = newMaxPageSearch;
   };
 
   // private getForPage = (
@@ -107,16 +117,69 @@ class PokemonsStore {
     return pokeList;
   };
 
+  private fetchName = async () => {
+    const res = await InfoOfPokemonsHelper.fetch(this.maxPage, 0, true);
+    if (res) {
+      this.names = res.map((name: any) => name.name);
+    }
+  };
+
+  private getNames = (name: string, page: number, paging: number) => {
+    const names = this.names.filter((item) => item.indexOf(name) === 0);
+    if (names.length) {
+      return {
+        names: names.slice(page * paging, page * paging + paging),
+        total: names.length,
+      };
+    }
+    return false;
+  };
+
+  private searchPokemons = async (
+    name: string,
+    page: number,
+    paging: number,
+    filter: string
+  ) => {
+    const names = this.getNames(name, page, paging);
+    const list: IPokemonForm[] = [];
+    if (names) {
+      for (let i = 0; i < names.names.length; i++) {
+        const res = await InfoOfPokemonsHelper.getByName(names.names[i]);
+        if (res) {
+          list.push(res);
+        }
+      }
+      this.pokemonsList[filter] = { data: list, total: names.total };
+      return { data: list, total: names.total };
+    }
+    return false;
+  };
+
   getPokemonsV2 = async (filter: string) => {
+    const _filter = JSON.parse(filter);
     if (!this.maxPage) {
       this.setMaxPage(1118);
     }
-    if (this.pokemonsList[filter]) {
-      this.setPokemonsListView(this.pokemonsList[filter]);
-    } else {
-      const res = await this.fetchPokemonsByFilter(filter);
-      this.pokemonsList[filter] = res;
+    if (!this.names.length) {
+      await this.fetchName();
+    }
+    if (_filter.query) {
+      const res = await this.searchPokemons(
+        _filter.query,
+        _filter.page,
+        _filter.paging,
+        filter
+      );
       this.setPokemonsListView(res);
+    } else {
+      if (this.pokemonsList[filter]) {
+        this.setPokemonsListView(this.pokemonsList[filter]);
+      } else {
+        const res = await this.fetchPokemonsByFilter(filter);
+        this.pokemonsList[filter] = { data: res, total: this.maxPage };
+        this.setPokemonsListView({ data: res, total: this.maxPage });
+      }
     }
   };
 
