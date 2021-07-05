@@ -4,73 +4,58 @@ import { NavigationPanel } from "./NavigationPanel";
 import { observer } from "mobx-react";
 import styles from "./styles/PokeTable.module.scss";
 import pokemonsStore from "../../../Store/pokemonsStore";
-import { Loader } from "../../core/Loader";
+import { Search } from "../../core/Search";
 
 interface ITableSettings {
   page: number;
   paging: number;
-  expectedItems: { startIndex: number; endIndex: number };
+  query: string;
 }
 
 export const PokeTable = observer(() => {
-  const { listView, getPokemonsV2, getMaxPage } = pokemonsStore;
+  const { listView, getPokemonsV2 } = pokemonsStore;
   const [tableSettings, setTableSettings] = useState<ITableSettings>({
     page: 0,
     paging: 10,
-    expectedItems: { startIndex: 0, endIndex: 0 },
+    query: "",
   });
 
   useEffect(() => {
     const filter = JSON.stringify({
       page: tableSettings.page,
       paging: tableSettings.paging,
-      query: "",
+      query: tableSettings.query,
     });
     getPokemonsV2(filter);
   }, [tableSettings]);
 
   return (
     <div className={styles.root}>
+      <Search
+        onChangeFilter={(query: string) =>
+          setTableSettings({ ...tableSettings, query: query })
+        }
+      />
       <div className={styles.list}>
-        <LisOfPokemons list={listView} />
+        <LisOfPokemons list={listView.data} />
       </div>
       <NavigationPanel
         pageNumber={tableSettings.page}
         paging={tableSettings.paging}
-        onChangePaging={(paging, start, end) =>
+        onChangePaging={(paging) =>
           setTableSettings({
             ...tableSettings,
             paging: paging,
             page: 0,
-            expectedItems: {
-              ...tableSettings.expectedItems,
-              startIndex: start,
-              endIndex: end,
-            },
           })
         }
-        onChangePageNumber={(pageNumber, start, end) =>
+        onChangePageNumber={(pageNumber) =>
           setTableSettings({
             ...tableSettings,
             page: pageNumber,
-            expectedItems: {
-              ...tableSettings.expectedItems,
-              startIndex: start,
-              endIndex: end,
-            },
           })
         }
-        onChangeExpected={(start, end) =>
-          setTableSettings({
-            ...tableSettings,
-            expectedItems: {
-              ...tableSettings.expectedItems,
-              startIndex: start,
-              endIndex: end,
-            },
-          })
-        }
-        maxPage={getMaxPage}
+        maxPage={listView.total}
       />
     </div>
   );

@@ -7,22 +7,17 @@ import { Pagination } from "./Pagination";
 interface IProps {
   pageNumber: number;
   paging: number;
-  onChangePaging: (
-    paging: number,
-    startIndex: number,
-    endIndex: number
-  ) => void;
-  onChangePageNumber: (
-    pageNumber: number,
-    startIndex: number,
-    endIndex: number
-  ) => void;
-  onChangeExpected: (startIndex: number, endIndex: number) => void;
+  onChangePaging: (paging: number) => void;
+  onChangePageNumber: (pageNumber: number) => void;
   maxPage: number;
 }
 
 export const NavigationPanel = (props: IProps) => {
-  const { listOfPage } = usePageNumbers(props.pageNumber, props.maxPage);
+  const { listOfPage } = usePageNumbers(
+    props.pageNumber,
+    props.maxPage,
+    props.paging
+  );
 
   return (
     <div className={styles.root}>
@@ -34,12 +29,7 @@ export const NavigationPanel = (props: IProps) => {
                 className={styles["page-link"]}
                 onClick={() => {
                   if (props.pageNumber !== 0) {
-                    const startIndex = (props.pageNumber - 1) * props.paging;
-                    props.onChangePageNumber(
-                      props.pageNumber - 1,
-                      startIndex,
-                      startIndex + props.paging
-                    );
+                    props.onChangePageNumber(props.pageNumber - 1);
                   }
                 }}
               />
@@ -56,11 +46,7 @@ export const NavigationPanel = (props: IProps) => {
                   <div
                     className={styles["page-link"]}
                     onClick={() => {
-                      props.onChangePageNumber(
-                        page,
-                        page * props.paging,
-                        page * props.paging + props.paging
-                      );
+                      props.onChangePageNumber(page);
                     }}
                   >
                     {page + 1}
@@ -78,12 +64,7 @@ export const NavigationPanel = (props: IProps) => {
                       Math.round(props.maxPage / props.paging)
                     )
                   ) {
-                    const startIndex = (props.pageNumber + 1) * props.paging;
-                    props.onChangePageNumber(
-                      props.pageNumber + 1,
-                      startIndex,
-                      startIndex + props.paging
-                    );
+                    props.onChangePageNumber(props.pageNumber + 1);
                   }
                 }}
               />
@@ -94,9 +75,7 @@ export const NavigationPanel = (props: IProps) => {
       <div>
         <Pagination
           paging={props.paging}
-          onChange={(newPaging) =>
-            props.onChangePaging(newPaging, 0, newPaging)
-          }
+          onChange={(newPaging) => props.onChangePaging(newPaging)}
         />
       </div>
     </div>

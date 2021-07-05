@@ -2,11 +2,14 @@ import axios from "axios";
 import { IPokemonForm } from "../models/PokemonForm";
 
 class InfoOfPokemonsHelper {
-  public fetch = async (paging: number, pageNumber: number) => {
+  public fetch = async (paging: number, pageNumber: number, onlyNames?: boolean) => {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${paging}&offset=${
       paging * pageNumber
     }`;
     const result = await axios.get(url);
+    if (onlyNames) {
+      return result.data.results
+    }
     const poke = await this.pushPokemons(result.data.results);
     const maxPage = result.data.count;
     return { poke, maxPage };
