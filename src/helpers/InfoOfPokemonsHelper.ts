@@ -2,13 +2,17 @@ import axios from "axios";
 import { IPokemonForm } from "../models/PokemonForm";
 
 class InfoOfPokemonsHelper {
-  public fetch = async (paging: number, pageNumber: number, onlyNames?: boolean) => {
+  public fetch = async (
+    paging: number,
+    pageNumber: number,
+    onlyNames?: boolean
+  ) => {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${paging}&offset=${
       paging * pageNumber
     }`;
     const result = await axios.get(url);
     if (onlyNames) {
-      return result.data.results
+      return result.data.results;
     }
     const poke = await this.pushPokemons(result.data.results);
     const maxPage = result.data.count;
@@ -34,6 +38,20 @@ class InfoOfPokemonsHelper {
     const url = `https://pokeapi.co/api/v2/pokemon/${name}`;
     const result = await axios.get(url);
     return result.data || "error";
+  };
+
+  public fetchTypes = async () => {
+    const result = await axios.get("https://pokeapi.co/api/v2/type");
+    return result.data.results.length
+      ? result.data.results.map((item: any) => item.name)
+      : false;
+  };
+
+  public fetchByTypes = async (type: string) => {
+    const url = `https://pokeapi.co/api/v2/type/${type}`;
+    const result = await axios.get(url);
+    console.log("DD result", result);
+    return result.data.pokemon.map((item: any) => item.pokemon.name);
   };
 }
 

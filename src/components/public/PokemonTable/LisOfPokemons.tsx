@@ -57,6 +57,7 @@ export const LisOfPokemons = ({ list }: IProps) => {
               className={styles.avatar}
               src={pokemon.sprites.front_default}
             />
+            <div>{pokemon.name}</div>
           </div>
         );
       })}
