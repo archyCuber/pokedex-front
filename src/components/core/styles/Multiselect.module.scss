@@ -1,0 +1,26 @@
+.root {
+  margin-left: 16px;
+}
+
+.MuiFormControl-root {
+  min-width: 100px;
+  color: #f55f13;
+}
+
+.text {
+  color: #f55f13;
+  z-index: 100;
+}
+
+.select {
+  color: orange;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chip {
+  margin: 2px;
+}

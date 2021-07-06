@@ -5,11 +5,14 @@ import { observer } from "mobx-react";
 import styles from "./styles/PokeTable.module.scss";
 import pokemonsStore from "../../../Store/pokemonsStore";
 import { Search } from "../../core/Search";
+import { MultiSelect } from "../../core/MultiSelect";
+import { useTypes } from "./hooks/useTypes";
 
 interface ITableSettings {
   page: number;
   paging: number;
   query: string;
+  types: string[];
 }
 
 export const PokeTable = observer(() => {
@@ -18,24 +21,31 @@ export const PokeTable = observer(() => {
     page: 0,
     paging: 10,
     query: "",
+    types: [],
   });
+  const types = useTypes();
 
   useEffect(() => {
-    const filter = JSON.stringify({
-      page: tableSettings.page,
-      paging: tableSettings.paging,
-      query: tableSettings.query,
-    });
+    const filter = JSON.stringify(tableSettings);
     getPokemonsV2(filter);
   }, [tableSettings]);
 
   return (
     <div className={styles.root}>
-      <Search
-        onChangeFilter={(query: string) =>
-          setTableSettings({ ...tableSettings, query: query })
-        }
-      />
+      <div className={styles.searchPanel}>
+        <Search
+          onChangeFilter={(query: string) =>
+            setTableSettings({ ...tableSettings, query: query })
+          }
+        />
+        <MultiSelect
+          value={tableSettings.types}
+          onChange={(value) =>
+            setTableSettings({ ...tableSettings, types: value.sort() })
+          }
+          source={types}
+        />
+      </div>
       <div className={styles.list}>
         <LisOfPokemons list={listView.data} />
       </div>

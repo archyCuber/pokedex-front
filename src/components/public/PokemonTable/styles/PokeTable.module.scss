@@ -1,8 +1,12 @@
 .root {
   display: flex;
   align-items: center;
-  //flex-wrap: nowrap;
   flex-direction: column;
+}
+
+.searchPanel {
+  display: flex;
+  margin-bottom: 50px;
 }
 
 .list {
