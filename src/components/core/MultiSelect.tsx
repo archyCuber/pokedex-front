@@ -4,6 +4,7 @@ import {
   FormControl,
   Input,
   InputLabel,
+  makeStyles,
   MenuItem,
   Select,
   Theme,
@@ -11,11 +12,30 @@ import {
 } from "@material-ui/core";
 import styles from "./styles/Multiselect.module.scss";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 150,
+    },
+  },
+};
+
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "#f55f13",
+    color: "white",
+  },
+});
+
 export const MultiSelect = (props: {
   value: string[];
   source: string[];
   onChange: (value: string[]) => void;
 }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     props.onChange(event.target.value as string[]);
@@ -36,9 +56,20 @@ export const MultiSelect = (props: {
         style={{ minWidth: "80px" }}
       >
         <InputLabel
-          style={{ color: "#ffffff", marginLeft: "5px" }}
+          style={{
+            background: "#f55f13",
+            border: "0",
+            borderRadius: "5px",
+            color: "white",
+            paddingLeft: "5px",
+            paddingTop: "5px",
+            paddingRight: "25px",
+            paddingBottom: "5px",
+            marginLeft: "5px",
+            position: "absolute",
+            top: "-5px",
+          }}
           id="demo-mutiple-chip-label"
-          className={styles.text}
         >
           Types
         </InputLabel>
@@ -47,14 +78,19 @@ export const MultiSelect = (props: {
           id="demo-mutiple-chip"
           multiple
           value={props.value}
-          style={{ background: "#f55f13", border: "0", borderRadius: "10px" }}
           className={styles.select}
           onChange={handleChange}
           input={<Input id="select-multiple-chip" />}
+          MenuProps={MenuProps}
           renderValue={(selected) => (
             <div className={styles.chips}>
               {(selected as string[]).map((value) => (
-                <Chip key={value} label={value} className={styles.chip} />
+                <Chip
+                  classes={{ root: classes.root }}
+                  key={value}
+                  label={value}
+                  className={styles.chip}
+                />
               ))}
             </div>
           )}

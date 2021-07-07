@@ -28,7 +28,7 @@ export const NavigationPanel = (props: IProps) => {
               <div
                 className={styles["page-link"]}
                 onClick={() => {
-                  if (props.pageNumber !== 0) {
+                  if (props.pageNumber && props.pageNumber !== 0) {
                     props.onChangePageNumber(props.pageNumber - 1);
                   }
                 }}
@@ -62,7 +62,8 @@ export const NavigationPanel = (props: IProps) => {
                     !(
                       props.pageNumber + 1 >=
                       Math.round(props.maxPage / props.paging)
-                    )
+                    ) &&
+                    props.pageNumber
                   ) {
                     props.onChangePageNumber(props.pageNumber + 1);
                   }

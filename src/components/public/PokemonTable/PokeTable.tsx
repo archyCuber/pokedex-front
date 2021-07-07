@@ -7,6 +7,7 @@ import pokemonsStore from "../../../Store/pokemonsStore";
 import { Search } from "../../core/Search";
 import { MultiSelect } from "../../core/MultiSelect";
 import { useTypes } from "./hooks/useTypes";
+import { Loader } from "../../core/Loader";
 
 interface ITableSettings {
   page: number;
@@ -16,19 +17,28 @@ interface ITableSettings {
 }
 
 export const PokeTable = observer(() => {
-  const { listView, getPokemonsV2 } = pokemonsStore;
   const [tableSettings, setTableSettings] = useState<ITableSettings>({
     page: 0,
     paging: 10,
     query: "",
     types: [],
   });
+  const { listView, getPokemonsV2, load } = pokemonsStore;
   const types = useTypes();
 
+  const queryToServerFormat = (query: string) => {
+    return query.split(" ").join("-").toLowerCase();
+  };
+
   useEffect(() => {
+    tableSettings.query = queryToServerFormat(tableSettings.query);
     const filter = JSON.stringify(tableSettings);
     getPokemonsV2(filter);
   }, [tableSettings]);
+
+  if (load) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.root}>

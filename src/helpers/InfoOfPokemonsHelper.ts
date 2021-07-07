@@ -19,6 +19,11 @@ class InfoOfPokemonsHelper {
     return { poke, maxPage };
   };
 
+  public fetchCount = async () => {
+    const result = await axios.get("https://pokeapi.co/api/v2/pokemon");
+    return result.data.count;
+  };
+
   public pushPokemons = async (list: any[]) => {
     const result = [] as IPokemonForm[];
     for (const item of list) {
@@ -50,7 +55,6 @@ class InfoOfPokemonsHelper {
   public fetchByTypes = async (type: string) => {
     const url = `https://pokeapi.co/api/v2/type/${type}`;
     const result = await axios.get(url);
-    console.log("DD result", result);
     return result.data.pokemon.map((item: any) => item.pokemon.name);
   };
 }
